@@ -46,4 +46,12 @@ app.put('/books/:id', (req: Request, res: Response) => {
     res.sendStatus(202);
 });
 
+app.delete('/books/:id', (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+
+    books = books.filter(book => book.id !== id);
+
+    res.sendStatus(202);
+});
+
 app.listen(3000, () => console.log('app listening'));
