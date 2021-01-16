@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.debug
+    container_name: api
+    command: node_modules/.bin/ts-node-dev --poll --exit-child --debug --respawn --inspect=0.0.0.0:9229 src/app.ts
+    ports:
+      - 3000:3000
+      - 9229:9229
+    volumes:
+      - ./src:/app/src

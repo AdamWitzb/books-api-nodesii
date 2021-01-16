@@ -3,7 +3,7 @@ FROM node:fermium-alpine3.12 AS builder
 
 WORKDIR /tmp
 
-COPY . /tmp
+COPY .. /tmp
 
 RUN npm install
 RUN npm run build
