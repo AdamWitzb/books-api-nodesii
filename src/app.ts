@@ -37,4 +37,13 @@ app.post('/books', (req: Request, res: Response) => {
     res.sendStatus(201);
 });
 
+app.put('/books/:id', (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+    const body = req.body;
+
+    books = books.map(book => book.id === id ? body : book);
+
+    res.sendStatus(202);
+});
+
 app.listen(3000, () => console.log('app listening'));
