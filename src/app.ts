@@ -17,8 +17,18 @@ let books: Book[] = [
 
 const app = express();
 
+app.use(express.json());
+
 app.get('/books', (req: Request, res: Response) => {
     res.status(200).json(books);
+});
+
+app.post('/books', (req: Request, res: Response) => {
+    const body = req.body;
+
+    books.push(body);
+
+    res.sendStatus(201);
 });
 
 app.listen(3000, () => console.log('app listening'));
