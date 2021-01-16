@@ -23,6 +23,12 @@ app.get('/books', (req: Request, res: Response) => {
     res.status(200).json(books);
 });
 
+app.get('/books/:id', (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+
+    res.status(200).json(books.filter(book => book.id === id));
+});
+
 app.post('/books', (req: Request, res: Response) => {
     const body = req.body;
 
