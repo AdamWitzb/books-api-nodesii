@@ -1,46 +1,17 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 
-import type { Book } from './types/Book';
-import type { BooksRepository } from './types/BooksRepository';
+import { BooksController } from './types/BooksController';
 
-export const appFactory = (booksRepository: BooksRepository) => {
+export const appFactory = (booksController: BooksController) => {
   const app = express();
 
   app.use(express.json());
 
-  app.get('/books', (req: Request, res: Response) => {
-    res.status(200).json(booksRepository.getAll());
-  });
-
-  app.get('/books/:id', (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-
-    res.status(200).json(booksRepository.getById(id));
-  });
-
-  app.post('/books', (req: Request, res: Response) => {
-    const body: Book = req.body;
-    booksRepository.add(body);
-
-    res.sendStatus(201);
-  });
-
-  app.put('/books/:id', (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-    const body: Book = req.body;
-
-    booksRepository.updateById(id, body);
-
-    res.sendStatus(202);
-  });
-
-  app.delete('/books/:id', (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-
-    booksRepository.deleteById(id);
-
-    res.sendStatus(202);
-  });
+  app.get('/books', booksController.getAllBooks);
+  app.get('/books/:id', booksController.getBookById);
+  app.post('/books', booksController.createBook);
+  app.put('/books/:id', booksController.updateBookById);
+  app.delete('/books/:id', booksController.deleteBookById);
 
   return app;
 };
