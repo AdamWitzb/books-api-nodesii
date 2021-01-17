@@ -1,17 +1,15 @@
 import express from 'express';
 
-import { BooksController } from './types/BooksController';
+import { createBooksRouter } from './router/books';
+
+import type { BooksController } from './types/BooksController';
 
 export const appFactory = (booksController: BooksController) => {
   const app = express();
+  const booksRouter = createBooksRouter(booksController);
 
   app.use(express.json());
-
-  app.get('/books', booksController.getAllBooks);
-  app.get('/books/:id', booksController.getBookById);
-  app.post('/books', booksController.createBook);
-  app.put('/books/:id', booksController.updateBookById);
-  app.delete('/books/:id', booksController.deleteBookById);
+  app.use(booksRouter);
 
   return app;
 };
