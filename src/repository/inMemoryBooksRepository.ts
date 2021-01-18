@@ -34,10 +34,22 @@ export const createInMemoryBooksRepository = (): BooksRepository => {
       return books.filter((book) => book.id === id).pop();
     },
     updateById(id: number, data: Book) {
-      books = books.map((book) => (book.id === id ? data : book));
+      let result = false;
+
+      const markUpdated = (book: Book) => {
+        result = true;
+        return book;
+      };
+
+      books = books.map((book) => (book.id === id ? markUpdated(data) : book));
+
+      return result;
     },
     deleteById(id: number) {
+      const count = books.length;
       books = books.filter((book) => book.id !== id);
+
+      return books.length !== count;
     },
   };
 };

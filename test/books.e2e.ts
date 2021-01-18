@@ -10,7 +10,7 @@ import type { Book } from '../src/types/Book';
 const request = supertest(app);
 
 describe('Books', () => {
-  it('lists books', async () => {
+  it('list books', async () => {
     const getBooksRequest = await request
       .get('/books')
       .set('Accept', 'application/json')
@@ -78,7 +78,7 @@ describe('Books', () => {
       title: 'Edited test',
     };
 
-    // update test book
+    // delete test book
     await request
       .delete(`/books/${payload.id}`)
       .set('Accept', 'application/json')
@@ -92,5 +92,21 @@ describe('Books', () => {
 
     // we expect the test book set again
     assert.deepStrictEqual(getBooksRequest.body, books);
+  });
+
+  it('handles fetching non-existing book', async () => {
+    // delete non-existing book
+    await request
+      .get(`/books/99999`)
+      .set('Accept', 'application/json')
+      .expect(HTTP.NOT_FOUND);
+  });
+
+  it('handles deleting non-existing book', async () => {
+    // delete non-existing book
+    await request
+      .delete(`/books/99999`)
+      .set('Accept', 'application/json')
+      .expect(HTTP.NOT_FOUND);
   });
 });

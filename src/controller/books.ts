@@ -5,6 +5,7 @@ import { HTTP } from '../consts';
 import type { Book } from '../types/Book';
 import type { BooksRepository } from '../types/BooksRepository';
 import type { BooksController } from '../types/BooksController';
+import { BookNotFoundException } from '../exception/bookNotFound';
 
 export const createBooksController = (
   booksRepository: BooksRepository
@@ -21,21 +22,33 @@ export const createBooksController = (
     },
     getBookById(req: Request, res: Response) {
       const id = Number(req.params.id);
+      const book = booksRepository.getById(id);
 
-      res.status(HTTP.OK).json(booksRepository.getById(id));
+      if (!book) {
+        throw new BookNotFoundException(id);
+      }
+
+      res.status(HTTP.OK).json();
     },
     updateBookById(req: Request, res: Response) {
       const id = Number(req.params.id);
       const body: Book = req.body;
 
-      booksRepository.updateById(id, body);
+      const result = booksRepository.updateById(id, body);
+
+      if (!result) {
+        throw new BookNotFoundException(id);
+      }
 
       res.sendStatus(HTTP.ACCEPTED);
     },
     deleteBookById(req: Request, res: Response) {
       const id = Number(req.params.id);
+      const result = booksRepository.deleteById(id);
 
-      booksRepository.deleteById(id);
+      if (!result) {
+        throw new BookNotFoundException(id);
+      }
 
       res.sendStatus(HTTP.ACCEPTED);
     },
