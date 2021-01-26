@@ -30,7 +30,7 @@ describe('Books', () => {
     await request
       .post('/books')
       .set('Accept', 'application/json')
-      .send(payload)
+      .send({ ...payload, authors: JSON.stringify(payload.authors) })
       .expect(HTTP.CREATED);
 
     // fetch list of books to verify if the added one is present
@@ -47,8 +47,8 @@ describe('Books', () => {
 
   it('edit book', async () => {
     const payload: Book = {
-      id: 9,
-      authors: 'Edited test',
+      id: 1,
+      authors: ['Edited test'],
       title: 'Edited test',
     };
 
@@ -56,42 +56,41 @@ describe('Books', () => {
     await request
       .put(`/books/${payload.id}`)
       .set('Accept', 'application/json')
-      .send(payload)
+      .send({ ...payload, authors: JSON.stringify(payload.authors) })
       .expect(HTTP.ACCEPTED);
 
-    // fetch list of books to verify if the added one is present
+    // fetch list of books to verify if the modified one is present
     const getBooksRequest = await request
       .get('/books')
       .set('Accept', 'application/json')
       .expect(HTTP.OK);
 
-    const booksAfterPut = books.concat(payload);
-
     // we expect the test book set plus the edited payload
-    assert.deepStrictEqual(getBooksRequest.body, booksAfterPut);
+    const [_, ...booksWithoutFirstOne] = books;
+    assert.deepStrictEqual(getBooksRequest.body, [
+      payload,
+      ...booksWithoutFirstOne,
+    ]);
   });
 
   it('delete book', async () => {
-    const payload: Book = {
-      id: 9,
-      authors: 'Edited test',
-      title: 'Edited test',
-    };
+    const bookToDeleteId = 1;
 
     // delete test book
     await request
-      .delete(`/books/${payload.id}`)
+      .delete(`/books/${bookToDeleteId}`)
       .set('Accept', 'application/json')
       .expect(HTTP.ACCEPTED);
 
-    // fetch list of books to verify if the added one is present
+    // fetch list of books to verify if the removed one is missing
     const getBooksRequest = await request
       .get('/books')
       .set('Accept', 'application/json')
       .expect(HTTP.OK);
 
-    // we expect the test book set again
-    assert.deepStrictEqual(getBooksRequest.body, books);
+    // we expect the first book to be missing
+    const [_, ...booksAfterDelete] = books;
+    assert.deepStrictEqual(getBooksRequest.body, booksAfterDelete);
   });
 
   it('handles fetching non-existing book', async () => {
