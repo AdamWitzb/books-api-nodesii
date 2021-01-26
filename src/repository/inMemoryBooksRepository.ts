@@ -1,11 +1,11 @@
 import type { Book } from '../types/Book';
-import type { BooksRepository } from '../types/BooksRepository';
+import type { InMemoryBooksRepository } from '../types/BooksRepository';
 
-export const createInMemoryBooksRepository = (): BooksRepository => {
+export const createInMemoryBooksRepository = (): InMemoryBooksRepository => {
   let books: Book[] = [
     {
       id: 1,
-      authors: 'Jonathan Haidt',
+      authors: ['Jonathan Haidt'],
       title: 'Coddling of the American Mind',
     },
     {
@@ -13,14 +13,14 @@ export const createInMemoryBooksRepository = (): BooksRepository => {
       authors: ['Dan Heath', 'Chip Heath'],
       title: 'Switch: How to change when change is hard',
     },
-    { id: 3, authors: 'Kathy Sierra', title: 'Badass: Making users awesome' },
+    { id: 3, authors: ['Kathy Sierra'], title: 'Badass: Making users awesome' },
     {
       id: 4,
-      authors: 'Daniel Kahneman',
+      authors: ['Daniel Kahneman'],
       title: 'Thinking fast, thinking slow',
     },
-    { id: 5, authors: 'Caroline Dweck', title: 'Mindset' },
-    { id: 6, authors: 'Michael Walker', title: 'Why we sleep?' },
+    { id: 5, authors: ['Caroline Dweck'], title: 'Mindset' },
+    { id: 6, authors: ['Michael Walker'], title: 'Why we sleep?' },
   ];
 
   return {
