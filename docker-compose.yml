@@ -5,8 +5,9 @@ services:
     environment:
       - POSTGRES_USER=api
       - POSTGRES_PASSWORD=development_pass
-      - POSTGRES_DB="books-api"
+      - POSTGRES_MULTIPLE_DATABASES="books-api","books-api-testing"
     volumes:
+      - ./docker/entrypoint:/docker-entrypoint-initdb.d
       - books-db-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
