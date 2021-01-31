@@ -6,9 +6,11 @@
   "scripts": {
     "build": "tsc",
     "test": "source .env.testing && mocha --exit -r ts-node/register --file test/global-setup.ts test/**/*.e2e.ts",
+    "test:ci": "IN_CI=true mocha --exit -r ts-node/register --file test/global-setup.ts test/**/*.e2e.ts",
     "format": "prettier --write src/ test/",
-    "start": "node dist/src/server.js",
+    "start:prod": "npm run db:migrate:prod && node dist/src/server.js",
     "start:dev": "source .env && ts-node-dev --debug --respawn src/server.ts",
+    "db:migrate:prod": "knex --knexfile dist/knexfile.js migrate:latest",
     "docker:debug:run": "docker-compose up --build",
     "docker:prod:build": "docker build -f docker/Dockerfile ."
   },
