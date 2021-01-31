@@ -1,7 +1,7 @@
 import cors from 'cors';
 
 import { db } from './connection/db';
-import { HTTP } from './consts';
+import { getAllowedHosts, HTTP, NODE_ENV } from './consts';
 
 import type { BooksController } from './types/BooksController';
 import type { BooksRepository } from './types/BooksRepository';
@@ -11,7 +11,7 @@ import { createBooksController } from './controller/books';
 import { createPgSQLBooksRepository } from './repository/pgSQLBooksRepository';
 
 const corsOptions: cors.CorsOptions = {
-  origin: process.env.NODE_ENV === 'production' ? 'http://localhost:3000' : '*',
+  origin: process.env.NODE_ENV === NODE_ENV ? getAllowedHosts() : '*',
   optionsSuccessStatus: HTTP.OK,
 };
 

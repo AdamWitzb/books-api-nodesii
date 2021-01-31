@@ -1,3 +1,4 @@
 import app from './createApp';
+import { PORT } from './consts';
 
-app.listen(3000, () => console.log('API listening on port 3000'));
+app.listen(PORT, () => console.log(`API listening on port ${PORT}`));

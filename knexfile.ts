@@ -1,8 +1,11 @@
-export default {
+import { DATABASE_URL } from './src/consts';
+
+import type { KnexEnvironmentConfigurations } from './src/types/KnexEnvironmentConfigurations';
+
+const knexEnvironmentConfigurations: KnexEnvironmentConfigurations = {
   development: {
     client: 'pg',
-    //if in Docker use postgres, if in local use localhost - for both modify /etc/hosts and point postgres to 127.0.0.1
-    connection: 'postgres://api:development_pass@postgres:5432/books-api',
+    connection: DATABASE_URL,
     migrations: {
       directory: './data/migrations',
     },
@@ -12,9 +15,17 @@ export default {
   },
   testing: {
     client: 'pg',
-    //if in Docker use postgres, if in local use localhost - for both modify /etc/hosts and point postgres to 127.0.0.1
-    connection:
-      'postgres://api:development_pass@postgres:5432/books-api-testing',
+    connection: DATABASE_URL,
+    migrations: {
+      directory: './data/migrations',
+    },
+    seeds: {
+      directory: './data/seeds',
+    },
+  },
+  production: {
+    client: 'pg',
+    connection: DATABASE_URL,
     migrations: {
       directory: './data/migrations',
     },
@@ -23,3 +34,5 @@ export default {
     },
   },
 };
+
+export default knexEnvironmentConfigurations;

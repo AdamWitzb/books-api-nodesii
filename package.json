@@ -5,10 +5,10 @@
   "name": "books-api",
   "scripts": {
     "build": "tsc",
-    "test": "NODE_ENV=testing mocha --exit -r ts-node/register --file test/global-setup.ts test/**/*.e2e.ts",
+    "test": "source .env.testing && mocha --exit -r ts-node/register --file test/global-setup.ts test/**/*.e2e.ts",
     "format": "prettier --write src/ test/",
     "start": "node dist/src/server.js",
-    "start:dev": "ts-node-dev --debug --respawn src/server.ts",
+    "start:dev": "source .env && ts-node-dev --debug --respawn src/server.ts",
     "docker:debug:run": "docker-compose up --build",
     "docker:prod:build": "docker build -f docker/Dockerfile ."
   },
